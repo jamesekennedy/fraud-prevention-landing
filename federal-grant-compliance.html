@@ -36,14 +36,14 @@
         }
 
         body {
-            font-family: 'Helvetica', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
             line-height: 1.6;
             color: var(--dark-text);
             overflow-x: hidden;
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Helvetica', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
             font-weight: 700;
             line-height: 1.2;
         }
@@ -149,6 +149,10 @@
             gap: 30px;
             margin-bottom: 40px;
             flex-wrap: wrap;
+            background: rgba(255,255,255,0.1);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
         }
 
         .trust-item {
@@ -156,7 +160,8 @@
             align-items: center;
             gap: 8px;
             font-size: 16px;
-            opacity: 0.95;
+            opacity: 1;
+            font-weight: 600;
         }
 
         .cta-container {
@@ -179,6 +184,30 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             position: relative;
             overflow: hidden;
+        }
+
+        .primary-cta.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .primary-cta.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .primary-cta::before {
@@ -255,6 +284,18 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
+        }
+
+        .problem-card.critical {
+            border-left: 4px solid #dc3545;
+        }
+
+        .problem-card.concerning {
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .problem-card.procedural {
+            border-left: 4px solid var(--secondary-blue);
         }
 
         .problem-card:hover {
@@ -825,12 +866,13 @@
             background: transparent;
             color: var(--secondary-blue);
             padding: 18px 35px;
-            border: 2px solid var(--secondary-blue);
+            border: 1px solid var(--secondary-blue);
             border-radius: 5px;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             transition: all 0.3s ease;
+            opacity: 0.8;
         }
 
         .btn-secondary:hover {
@@ -1232,7 +1274,7 @@
     <header class="header">
         <div class="container">
             <div class="pre-headline">2 CFR 200 COMPLIANCE SOFTWARE BUILT FOR QUICKBOOKS ORGANIZATIONS</div>
-            <h1>Keep using QuickBooks while achieving perfect <strong>2 CFR 200 compliance</strong></h1>
+            <h1>Keep QuickBooks. Add Perfect <strong>Federal Compliance</strong></h1>
             <p class="subheadline">Eliminate double data entry between QuickBooks and federal award management with AI-powered 2 CFR 200 policy verification and automated Section 200.303 Internal Controls for Single Audit readiness</p>
             
             <div class="trust-indicators">
@@ -1243,7 +1285,7 @@
             </div>
 
             <div class="cta-container">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="primary-cta">START FREE TRIAL</a>
+                <a href="https://www.procurementexpress.com/users/sign_up" class="primary-cta">Get QuickBooks 2 CFR 200 Setup</a>
                 <a href="#" class="secondary-link" id="demo-video-link">Watch 2-min QuickBooks demo →</a>
             </div>
         </div>
@@ -1255,19 +1297,19 @@
             <h2 class="section-headline">The QuickBooks Federal Award Compliance Crisis</h2>
             
             <div class="problem-grid">
-                <div class="problem-card">
+                <div class="problem-card concerning">
                     <div class="problem-icon spreadsheet-pain">📊</div>
                     <p class="problem-text">Double data entry for every federal award transaction, difficulty meeting 2 CFR 200.302 requirements</p>
                 </div>
-                <div class="problem-card">
+                <div class="problem-card procedural">
                     <div class="problem-icon double-entry">⚡</div>
                     <p class="problem-text">QuickBooks workarounds fail to meet federal award tracking and reporting mandates</p>
                 </div>
-                <div class="problem-card">
+                <div class="problem-card critical">
                     <div class="problem-icon audit-risk">⚠️</div>
                     <p class="problem-text">Lack of documented Section 200.303 Internal Controls leads to audit findings and disallowed costs</p>
                 </div>
-                <div class="problem-card">
+                <div class="problem-card concerning">
                     <div class="problem-icon compliance-gap">❌</div>
                     <p class="problem-text">Enterprise solutions require abandoning QuickBooks but lack 2 CFR 200 compliance for QuickBooks users</p>
                 </div>
@@ -1481,8 +1523,8 @@
             </div>
 
             <div class="cta-buttons">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="btn-primary">Start Free Trial - No Credit Card Required</a>
-                <a href="https://www.procurementexpress.com/book-a-demo/" class="btn-secondary">Schedule 2 CFR 200 QuickBooks Demo</a>
+                <a href="https://www.procurementexpress.com/users/sign_up" class="btn-primary">Start Free QuickBooks Compliance Setup</a>
+                <a href="https://www.procurementexpress.com/book-a-demo/" class="btn-tertiary">Schedule Demo</a>
             </div>
 
             <div class="security-badges">
@@ -1571,8 +1613,8 @@
     <section class="final-cta-section">
         <div class="container">
             <div class="cta-buttons">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="btn-primary">Start Your Free Trial</a>
-                <a href="https://www.procurementexpress.com/book-a-demo/" class="btn-secondary">Book 2 CFR 200 Demo</a>
+                <a href="https://www.procurementexpress.com/users/sign_up" class="btn-primary">Start Your QuickBooks Setup</a>
+                <a href="https://www.procurementexpress.com/book-a-demo/" class="btn-tertiary">Book Demo</a>
                 <a href="https://www.procurementexpress.com/resources/" class="btn-tertiary">Download 2 CFR 200 Compliance Guide</a>
             </div>
 

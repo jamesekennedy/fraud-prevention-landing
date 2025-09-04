@@ -36,22 +36,22 @@
         }
 
         body {
-            font-family: 'Helvetica', Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
             line-height: 1.6;
             color: var(--dark-text);
             overflow-x: hidden;
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Helvetica', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
             font-weight: 700;
             line-height: 1.2;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
         }
 
         /* Header Section */
@@ -90,9 +90,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 30px;
+            padding: 0 40px;
         }
 
         .logo {
@@ -149,6 +149,10 @@
             gap: 30px;
             margin-bottom: 40px;
             flex-wrap: wrap;
+            background: rgba(255,255,255,0.1);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
         }
 
         .trust-item {
@@ -156,7 +160,8 @@
             align-items: center;
             gap: 8px;
             font-size: 16px;
-            opacity: 0.95;
+            opacity: 1;
+            font-weight: 600;
         }
 
         .cta-container {
@@ -225,6 +230,11 @@
             font-size: clamp(28px, 4vw, 42px);
             margin-bottom: 50px;
             color: var(--dark-text);
+            text-align: center;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 50px;
         }
 
         .problem-grid {
@@ -256,6 +266,18 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border-color: var(--primary-orange);
+        }
+
+        .problem-card.critical {
+            border-left: 4px solid #dc3545;
+        }
+
+        .problem-card.concerning {
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .problem-card.procedural {
+            border-left: 4px solid var(--secondary-blue);
         }
 
         .problem-icon {
@@ -1247,7 +1269,7 @@
     <header class="header">
         <div class="container">
             <div class="pre-headline">STOP TRANSACTION FRAUD IN YOUR BOOKS</div>
-            <h1>Every unauthorized purchase. Every fake invoice. Every budget override. <strong>Stopped automatically.</strong></h1>
+            <h1>Stop Transaction Fraud. <strong>Protect Your Books.</strong></h1>
             <p class="subheadline">Block fraudulent transactions before they happen with mandatory approval workflows and real-time spend tracking</p>
             
             <div class="trust-indicators">
@@ -1258,7 +1280,7 @@
             </div>
 
             <div class="cta-container">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="primary-cta">START FREE TRIAL</a>
+                <a href="https://www.procurementexpress.com/users/sign_up" class="primary-cta">Stop Fraud Now</a>
                 <a href="#" class="secondary-link" id="demo-video-link">Watch 2-min demo →</a>
             </div>
         </div>
@@ -1270,19 +1292,19 @@
             <h2 class="section-headline">The Hidden Crisis Costing You Thousands Every Month</h2>
             
             <div class="problem-grid">
-                <div class="problem-card">
+                <div class="problem-card critical">
                     <div class="problem-icon document-fraud">!</div>
                     <p class="problem-text">Approving invoices from fake vendors</p>
                 </div>
-                <div class="problem-card">
+                <div class="problem-card concerning">
                     <div class="problem-icon splitting-fraud">⚡</div>
                     <p class="problem-text">Splitting purchases to bypass approval limits</p>
                 </div>
-                <div class="problem-card">
+                <div class="problem-card concerning">
                     <div class="problem-icon phantom-fraud">⭕</div>
                     <p class="problem-text">Creating phantom purchase orders</p>
                 </div>
-                <div class="problem-card">
+                <div class="problem-card critical">
                     <div class="problem-icon override-fraud">⛔</div>
                     <p class="problem-text">Overriding budget controls</p>
                 </div>
