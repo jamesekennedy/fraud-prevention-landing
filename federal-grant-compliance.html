@@ -1275,18 +1275,39 @@
         <div class="container">
             <div class="pre-headline">2 CFR 200 COMPLIANCE SOFTWARE BUILT FOR QUICKBOOKS ORGANIZATIONS</div>
             <h1>Keep QuickBooks®. Add Perfect <strong>Federal Compliance</strong></h1>
-            <p class="subheadline">Eliminate double data entry between QuickBooks and federal award management with AI-powered 2 CFR 200 policy verification and automated Section 200.303 Internal Controls for Single Audit readiness</p>
             
-            <div class="trust-indicators">
-                <div class="trust-item">50K-100K QuickBooks Organizations</div>
-                <div class="trust-item">2 CFR 200 Compliant</div>
-                <div class="trust-item">Single Audit Ready</div>
-                <div class="trust-item">Zero Questioned Costs</div>
+            <!-- Hero Content with Floating Video -->
+            <div class="hero-content-wrapper" style="display: flex; align-items: flex-start; gap: 40px; margin-bottom: 40px; flex-wrap: wrap;">
+                <div class="hero-text-content" style="flex: 1; min-width: 400px;">
+                    <p class="subheadline" style="margin-bottom: 30px; text-align: left;">Eliminate double data entry between QuickBooks and federal award management with AI-powered 2 CFR 200 policy verification and automated Section 200.303 Internal Controls for Single Audit readiness</p>
+                    
+                    <div class="trust-indicators" style="justify-content: flex-start; margin-bottom: 30px;">
+                        <div class="trust-item">50K-100K QuickBooks Organizations</div>
+                        <div class="trust-item">2 CFR 200 Compliant</div>
+                        <div class="trust-item">Single Audit Ready</div>
+                        <div class="trust-item">Zero Questioned Costs</div>
+                    </div>
+                </div>
+                
+                <div class="hero-video-container" style="flex: 0 0 400px; min-width: 300px;">
+                    <div class="video-container" style="max-width: 400px;">
+                        <iframe 
+                            src="https://www.youtube.com/embed/mbF5oZDc9e4" 
+                            title="QuickBooks® 2 CFR 200 Compliance Demo"
+                            frameborder="0" 
+                            allowfullscreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                        </iframe>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px; font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500;">
+                        2-minute compliance demo
+                    </p>
+                </div>
             </div>
 
             <div class="cta-container">
                 <a href="https://www.procurementexpress.com/users/sign_up" class="primary-cta">Get QuickBooks 2 CFR 200 Setup</a>
-                <a href="#" class="secondary-link" id="demo-video-link">Watch 2-min QuickBooks demo →</a>
+                <a href="#demo" class="secondary-link">Watch Full Demo Below →</a>
             </div>
         </div>
     </header>
@@ -1322,17 +1343,17 @@
     </section>
 
     <!-- Video Section -->
-    <section class="video-section">
+    <section class="video-section" id="demo">
         <div class="container">
-            <h2 class="section-headline">See How 2 CFR 200 Compliance Works in QuickBooks</h2>
+            <h2 class="section-headline">See How Organizations Like UNICEF Achieve Compliance</h2>
             <p style="text-align: center; font-size: 18px; max-width: 700px; margin: 0 auto 40px;">
-                Watch this short demo to see exactly how ProcurementExpress integrates with QuickBooks to eliminate manual federal award tracking and ensure 2 CFR 200 compliance:
+                Watch this testimonial from UNICEF to see how global organizations achieve perfect federal compliance using QuickBooks® with ProcurementExpress:
             </p>
             
             <div class="video-container">
                 <iframe 
                     src="https://www.youtube.com/embed/Lk6aq9cO2pQ" 
-                    title="QuickBooks 2 CFR 200 Compliance Demo"
+                    title="UNICEF Testimonial - QuickBooks® Federal Compliance Success"
                     frameborder="0" 
                     allowfullscreen
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
@@ -1340,7 +1361,7 @@
             </div>
             
             <p style="text-align: center; margin-top: 30px; font-size: 16px; color: var(--dark-text);">
-                <strong>Don't abandon QuickBooks for expensive enterprise solutions.</strong> See how you can maintain compliance while keeping your familiar financial system.
+                <strong>Trusted by global organizations.</strong> See how UNICEF and other major institutions maintain compliance while keeping their familiar financial systems.
             </p>
         </div>
     </section>
@@ -1752,9 +1773,13 @@
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                    // Account for fixed navigation height (approximately 80px)
+                    const navHeight = 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
                     });
                 }
             });
