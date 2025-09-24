@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastermind Timer</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #5e81ac;
+            --accent: #d08770;
+            --light: #eceff4;
+            --dark: #2e3440;
+            --success: #a3be8c;
+            --warning: #ebcb8b;
+            --danger: #bf616a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary);
+            text-align: center;
+        }
+        
+        .setup-card, .timer-card, .participant-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 20px auto;
+            min-width: 200px;
+        }
+        
+        button:hover {
+            background-color: var(--secondary);
+        }
+        
+        .secondary-btn {
+            background-color: var(--secondary);
+            margin: 10px 0;
+            min-width: 150px;
+            font-size: 14px;
+            padding: 8px 15px;
+        }
+        
+        .secondary-btn:hover {
+            background-color: var(--primary);
+        }
+        
+        .participant-entry {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .participant-entry input {
+            flex-grow: 1;
+        }
+        
+        .remove-btn {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: unset;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .remove-btn:hover {
+            background-color: #a33030;
+        }
+        
+        .time-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .time-input-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .time-input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        
+        select.time-input {
+            width: auto;
+        }
+        
+        #end-hour, #end-minute {
+            width: 70px;
+        }
+        
+        #end-ampm {
+            width: 60px;
+        }
+        
+        .timer-display {
+            font-size: 3rem;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .button-group button {
+            margin: 0;
+            min-width: 120px;
+        }
+        
+        .prev-btn {
+            background-color: #7b68ee; /* Medium slate blue */
+        }
+        
+        .reset-btn {
+            background-color: var(--warning);
+        }
+        
+        .skip-btn {
+            background-color: var(--accent);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--success);
+            transition: width 1s;
+            border-radius: 10px;
+        }
+        
+        .phase-indicator {
+            background-color: var(--light);
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .current {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .completed {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .phase-change-flash {
+            background-color: var(--warning) !important;
+            color: var(--dark) !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(235, 203, 139, 0.6);
+        }
+        
+        .timer-flash {
+            animation: timerPulse 0.8s ease-in-out;
+        }
+        
+        @keyframes timerPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); color: var(--warning); }
+            100% { transform: scale(1); }
+        }
+        
+        .participant-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .current-participant {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .time-breakdown {
+            margin-top: 10px;
+        }
+        
+        .time-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .button-group button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mastermind Timer</h1>
+        
+        <!-- Setup Card -->
+        <div id="setup-card" class="setup-card">
+            <h2>Session Setup</h2>
+            <div class="form-group">
+                <label>Participants:</label>
+                <div id="participant-names-container">
+                    <!-- Participant name fields will be added here -->
+                </div>
+                <button id="add-participant" class="secondary-btn">+ Add Participant</button>
+            </div>
+            <div class="form-group">
+                <label>Session End Time:</label>
+                <div class="time-selector">
+                    <div class="time-input-container">
+                        <select id="end-hour" class="time-input">
+                            <!-- Hours will be populated with JavaScript -->
+                        </select>
+                        <span>:</span>
+                        <select id="end-minute" class="time-input">
+                            <!-- Minutes will be populated with JavaScript -->
+                        </select>
+                        <select id="end-ampm" class="time-input">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                    <button id="default-time" class="secondary-btn">Set to 25 Past Next Hour</button>
+                </div>
+            </div>
+            <button id="start-session">Start Session</button>
+        </div>
+        
+        <!-- Timer Card -->
+        <div id="timer-card" class="timer-card hidden">
+            <h2 id="timer-headline">Session Started</h2>
+            <div class="current-participant" id="current-participant">Participant 1</div>
+            <div class="phase-indicator" id="phase-indicator">Problem Outline</div>
+            <div class="timer-display" id="timer-display">00:00</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="participant-info">
+                <div>Participant: <span id="participant-number">1</span>/<span id="total-participants">4</span></div>
+                <div>Phase: <span id="phase-number">1</span>/3</div>
+            </div>
+            <div class="time-breakdown">
+                <div class="time-item">
+                    <span>Total Time per Participant:</span>
+                    <span id="total-time-per-participant">00:00</span>
+                </div>
+                <div class="time-item">
+                    <span>Problem Outline (40%):</span>
+                    <span id="problem-outline-time">00:00</span>
+                </div>
+                <div class="time-item">
+                    <span>Clarifying Questions (20%):</span>
+                    <span id="clarifying-questions-time">00:00</span>
+                </div>
+                <div class="time-item">
+                    <span>Feedback from Each (Remaining %):</span>
+                    <span id="feedback-time">00:00</span>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="pause-resume" class="pause-btn">Pause</button>
+                <button id="prev-phase" class="prev-btn">Previous Phase</button>
+                <button id="skip" class="skip-btn">Skip Phase</button>
+                <button id="reset" class="reset-btn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Declare variables to track pause timing
+            let pauseTime;
+            
+            // DOM elements
+            const setupCard = document.getElementById('setup-card');
+            const timerCard = document.getElementById('timer-card');
+            const participantNamesContainer = document.getElementById('participant-names-container');
+            const addParticipantBtn = document.getElementById('add-participant');
+            const endHourSelect = document.getElementById('end-hour');
+            const endMinuteSelect = document.getElementById('end-minute');
+            const endAmPmSelect = document.getElementById('end-ampm');
+            const defaultTimeBtn = document.getElementById('default-time');
+            const startSessionBtn = document.getElementById('start-session');
+            const pauseResumeBtn = document.getElementById('pause-resume');
+            const prevPhaseBtn = document.getElementById('prev-phase');
+            const skipBtn = document.getElementById('skip');
+            const resetBtn = document.getElementById('reset');
+            const timerDisplay = document.getElementById('timer-display');
+            const timerHeadline = document.getElementById('timer-headline');
+            const progressBar = document.getElementById('progress-bar');
+            const currentParticipantEl = document.getElementById('current-participant');
+            const phaseIndicatorEl = document.getElementById('phase-indicator');
+            const participantNumberEl = document.getElementById('participant-number');
+            const totalParticipantsEl = document.getElementById('total-participants');
+            const phaseNumberEl = document.getElementById('phase-number');
+            const totalTimePerParticipantEl = document.getElementById('total-time-per-participant');
+            const problemOutlineTimeEl = document.getElementById('problem-outline-time');
+            const clarifyingQuestionsTimeEl = document.getElementById('clarifying-questions-time');
+            const feedbackTimeEl = document.getElementById('feedback-time');
+            
+            // Timer variables
+            let timerInterval;
+            let endTime;
+            let currentTime;
+            let isPaused = false;
+            let participants = 0;
+            let currentParticipant = 1;
+            let currentPhase = 1; // 1: Problem Outline, 2: Clarifying Questions, 3: Feedback
+            let feedbackParticipant = 1;
+            let participantNames = [];
+            let participantCount = 0;
+            let feedbackOrder = [];
+            
+            // Store previous phase information for going back
+            let previousPhaseHistory = [];
+            
+            // Phase time percentages
+            const PROBLEM_OUTLINE_PERCENT = 0.4;
+            const CLARIFYING_QUESTIONS_PERCENT = 0.2;
+            const FEEDBACK_PERCENT = 0.4; // Remaining time divided among other participants
+            
+            // Time calculations
+            let totalSessionTime;
+            let timePerParticipant;
+            let problemOutlineTime;
+            let clarifyingQuestionsTime;
+            let feedbackTimePerPerson;
+            let currentPhaseEndTime;
+            
+            // Add a new participant
+            function addParticipant() {
+                participantCount++;
+                const participantEntry = document.createElement('div');
+                participantEntry.className = 'participant-entry';
+                participantEntry.id = `entry-${participantCount}`;
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `participant-${participantCount}`;
+                input.placeholder = `Participant ${participantCount}`;
+                input.value = `Participant ${participantCount}`;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.textContent = '×';
+                removeBtn.setAttribute('data-id', participantCount);
+                removeBtn.onclick = function() {
+                    removeParticipant(this.getAttribute('data-id'));
+                };
+                
+                participantEntry.appendChild(input);
+                participantEntry.appendChild(removeBtn);
+                participantNamesContainer.appendChild(participantEntry);
+                
+                // Update the participant count for validation
+                participants = document.querySelectorAll('.participant-entry').length;
+                validateForm();
+            }
+            
+            // Remove a participant
+            function removeParticipant(id) {
+                const entry = document.getElementById(`entry-${id}`);
+                if (entry) {
+                    entry.remove();
+                }
+                
+                // Update the participant count for validation
+                participants = document.querySelectorAll('.participant-entry').length;
+                validateForm();
+            }
+            
+            // Validate form to enable/disable start button
+            function validateForm() {
+                // Need at least 2 participants for a mastermind session
+                startSessionBtn.disabled = participants < 2;
+                
+                if (participants < 2) {
+                    startSessionBtn.style.opacity = '0.5';
+                    startSessionBtn.title = 'Add at least 2 participants to start';
+                } else {
+                    startSessionBtn.style.opacity = '1';
+                    startSessionBtn.title = '';
+                }
+            }
+            
+            // Populate the hour dropdown
+            function populateHours() {
+                endHourSelect.innerHTML = '';
+                for (let i = 1; i <= 12; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    endHourSelect.appendChild(option);
+                }
+            }
+            
+            // Populate the minute dropdown
+            function populateMinutes() {
+                endMinuteSelect.innerHTML = '';
+                for (let i = 0; i < 60; i += 5) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i.toString().padStart(2, '0');
+                    endMinuteSelect.appendChild(option);
+                }
+            }
+            
+            // Set the time selectors to the default (25 minutes past next hour)
+            function setDefaultEndTime() {
+                const now = new Date();
+                const nextHour = new Date(now);
+                nextHour.setHours(now.getHours() + 1);
+                nextHour.setMinutes(25);
+                nextHour.setSeconds(0);
+                
+                // Update the time selectors
+                let hours = nextHour.getHours();
+                const minutes = nextHour.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                
+                // Convert to 12-hour format
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                
+                // Set the selectors
+                endHourSelect.value = hours;
+                endMinuteSelect.value = minutes - (minutes % 5); // Round to nearest 5 minutes
+                endAmPmSelect.value = ampm;
+            }
+            
+            // Get the selected end time as a Date object
+            function getSelectedEndTime() {
+                const now = new Date();
+                
+                const hour = parseInt(endHourSelect.value);
+                const minute = parseInt(endMinuteSelect.value);
+                const ampm = endAmPmSelect.value;
+                
+                // Convert to 24-hour format
+                let hour24 = hour;
+                if (ampm === 'PM' && hour !== 12) hour24 += 12;
+                if (ampm === 'AM' && hour === 12) hour24 = 0;
+                
+                const endTime = new Date(now);
+                endTime.setHours(hour24);
+                endTime.setMinutes(minute);
+                endTime.setSeconds(0);
+                
+                // If end time is in the past, set it to tomorrow
+                if (endTime < now) {
+                    endTime.setDate(endTime.getDate() + 1);
+                }
+                
+                return endTime;
+            }
+            
+            // Format time in MM:SS
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            // Generate a randomized feedback order
+            function generateFeedbackOrder() {
+                // Create an array of participant indices (1-based)
+                let indices = [];
+                for (let i = 1; i <= participants; i++) {
+                    if (i !== currentParticipant) {
+                        indices.push(i);
+                    }
+                }
+                
+                // Shuffle the array using Fisher-Yates algorithm
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+                
+                return indices;
+            }
+            
+            // Calculate time distributions
+            function calculateTimes() {
+                const now = new Date();
+                endTime = getSelectedEndTime();
+                
+                // Calculate total session time in seconds
+                totalSessionTime = Math.floor((endTime - now) / 1000);
+                
+                // Check if end time is valid
+                if (totalSessionTime <= 0) {
+                    alert('Please select an end time in the future.');
+                    return false;
+                }
+                
+                // Time per participant
+                timePerParticipant = Math.floor(totalSessionTime / participants);
+                
+                // Calculate phase times
+                problemOutlineTime = Math.floor(timePerParticipant * PROBLEM_OUTLINE_PERCENT);
+                clarifyingQuestionsTime = Math.floor(timePerParticipant * CLARIFYING_QUESTIONS_PERCENT);
+                const remainingTime = timePerParticipant - problemOutlineTime - clarifyingQuestionsTime;
+                
+                // Feedback time per person (divide remaining time among other participants)
+                feedbackTimePerPerson = Math.floor(remainingTime / (participants - 1));
+                
+                // Update UI with calculated times
+                totalTimePerParticipantEl.textContent = formatTime(timePerParticipant);
+                problemOutlineTimeEl.textContent = formatTime(problemOutlineTime);
+                clarifyingQuestionsTimeEl.textContent = formatTime(clarifyingQuestionsTime);
+                feedbackTimeEl.textContent = formatTime(feedbackTimePerPerson);
+                
+                // Set initial phase end time
+                currentPhaseEndTime = now.getTime() / 1000 + problemOutlineTime;
+                
+                return true;
+            }
+            
+            // Start the timer
+            function startTimer() {
+                const startTime = new Date();
+                updateTimer();
+                
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+            
+            // Define updateTimer globally to avoid scope issues
+            function updateTimer() {
+                if (isPaused) return;
+                
+                const now = new Date();
+                currentTime = now;
+                
+                // Calculate remaining time for current phase
+                const currentTimeInSeconds = Math.floor(now.getTime() / 1000);
+                const phaseRemainingSeconds = Math.max(0, Math.floor(currentPhaseEndTime - currentTimeInSeconds));
+                
+                // Check if phase is complete
+                if (phaseRemainingSeconds <= 0) {
+                    moveToNextPhase();
+                }
+                
+                // Update timer display
+                timerDisplay.textContent = formatTime(phaseRemainingSeconds);
+                
+                // Update progress bar
+                updateProgressBar(phaseRemainingSeconds);
+            }
+            
+            // Update the progress bar
+            function updateProgressBar(remainingSeconds) {
+                let phaseTotal;
+                
+                switch (currentPhase) {
+                    case 1:
+                        phaseTotal = problemOutlineTime;
+                        break;
+                    case 2:
+                        phaseTotal = clarifyingQuestionsTime;
+                        break;
+                    case 3:
+                        phaseTotal = feedbackTimePerPerson;
+                        break;
+                }
+                
+                const progress = 100 - ((remainingSeconds / phaseTotal) * 100);
+                progressBar.style.width = `${progress}%`;
+                
+                // Change color as time runs out
+                if (remainingSeconds < 10) {
+                    progressBar.style.backgroundColor = 'var(--danger)';
+                } else if (remainingSeconds < 30) {
+                    progressBar.style.backgroundColor = 'var(--warning)';
+                } else {
+                    progressBar.style.backgroundColor = 'var(--success)';
+                }
+            }
+            
+            // Move to next phase or participant
+            function moveToNextPhase() {
+                // Save current state to history before changing
+                previousPhaseHistory.push({
+                    currentParticipant: currentParticipant,
+                    currentPhase: currentPhase,
+                    feedbackParticipant: feedbackParticipant,
+                    feedbackOrder: [...feedbackOrder]
+                });
+                
+                // Limit history to prevent memory issues
+                if (previousPhaseHistory.length > 10) {
+                    previousPhaseHistory.shift();
+                }
+                
+                // First, handle phase transitions
+                if (currentPhase === 1) {
+                    // Move from Problem Outline to Clarifying Questions
+                    currentPhase = 2;
+                    updatePhaseUI();
+                    currentPhaseEndTime = Math.floor(currentTime.getTime() / 1000) + clarifyingQuestionsTime;
+                } 
+                else if (currentPhase === 2) {
+                    // Move from Clarifying Questions to Feedback
+                    currentPhase = 3;
+                    
+                    // Generate randomized feedback order (excluding current participant)
+                    feedbackOrder = generateFeedbackOrder();
+                    feedbackParticipant = feedbackOrder[0]; // Start with first person in randomized list
+                    
+                    updatePhaseUI();
+                    currentPhaseEndTime = Math.floor(currentTime.getTime() / 1000) + feedbackTimePerPerson;
+                } 
+                else if (currentPhase === 3) {
+                    // Move to next feedback participant based on randomized order
+                    // Find current index in feedbackOrder array
+                    const currentIndex = feedbackOrder.indexOf(feedbackParticipant);
+                    
+                    // If we've gone through all feedback participants
+                    if (currentIndex === feedbackOrder.length - 1) {
+                        // Move to next main participant
+                        currentParticipant++;
+                        currentPhase = 1;
+                        
+                        // If we've gone through all participants, end session
+                        if (currentParticipant > participants) {
+                            endSession();
+                            return;
+                        }
+                        
+                        // Otherwise set up for next participant's problem outline
+                        currentPhaseEndTime = Math.floor(currentTime.getTime() / 1000) + problemOutlineTime;
+                    } else {
+                        // Move to next person in the randomized feedback order
+                        feedbackParticipant = feedbackOrder[currentIndex + 1];
+                        currentPhaseEndTime = Math.floor(currentTime.getTime() / 1000) + feedbackTimePerPerson;
+                    }
+                    
+                    updatePhaseUI();
+                }
+            }
+            
+            // Go back to previous phase
+            function goToPreviousPhase() {
+                if (previousPhaseHistory.length === 0) {
+                    alert("Can't go back any further!");
+                    return;
+                }
+                
+                // Get the previous state
+                const prevState = previousPhaseHistory.pop();
+                
+                // Restore previous state
+                currentParticipant = prevState.currentParticipant;
+                currentPhase = prevState.currentPhase;
+                feedbackParticipant = prevState.feedbackParticipant;
+                feedbackOrder = [...prevState.feedbackOrder];
+                
+                // Update the UI
+                updatePhaseUI();
+                
+                // Reset the timer for this phase
+                const now = new Date();
+                currentTime = now;
+                
+                if (currentPhase === 1) {
+                    currentPhaseEndTime = Math.floor(now.getTime() / 1000) + problemOutlineTime;
+                } else if (currentPhase === 2) {
+                    currentPhaseEndTime = Math.floor(now.getTime() / 1000) + clarifyingQuestionsTime;
+                } else if (currentPhase === 3) {
+                    currentPhaseEndTime = Math.floor(now.getTime() / 1000) + feedbackTimePerPerson;
+                }
+                
+                // Update the timer display
+                const phaseRemainingSeconds = Math.floor(currentPhaseEndTime - Math.floor(now.getTime() / 1000));
+                timerDisplay.textContent = formatTime(phaseRemainingSeconds);
+                updateProgressBar(phaseRemainingSeconds);
+            }
+            
+            // Update UI to reflect current phase
+            function updatePhaseUI() {
+                participantNumberEl.textContent = currentParticipant;
+                currentParticipantEl.textContent = participantNames[currentParticipant - 1] || `Participant ${currentParticipant}`;
+                
+                if (currentPhase === 1) {
+                    phaseIndicatorEl.textContent = "Problem Outline";
+                    phaseNumberEl.textContent = "1";
+                } 
+                else if (currentPhase === 2) {
+                    phaseIndicatorEl.textContent = "Clarifying Questions";
+                    phaseNumberEl.textContent = "2";
+                } 
+                else if (currentPhase === 3) {
+                    const feedbackName = participantNames[feedbackParticipant - 1] || `Participant ${feedbackParticipant}`;
+                    phaseIndicatorEl.textContent = `Feedback from ${feedbackName}`;
+                    phaseNumberEl.textContent = "3";
+                }
+            }
+            
+            // End the session
+            function endSession() {
+                clearInterval(timerInterval);
+                timerDisplay.textContent = "00:00";
+                phaseIndicatorEl.textContent = "Session Complete";
+                timerHeadline.textContent = "Session Complete";
+                phaseIndicatorEl.classList.add("completed");
+                progressBar.style.width = "100%";
+                progressBar.style.backgroundColor = "var(--success)";
+                pauseResumeBtn.disabled = true;
+                prevPhaseBtn.disabled = true;
+                skipBtn.disabled = true;
+            }
+            
+            // Start the session
+            function startSession() {
+                participants = document.querySelectorAll('.participant-entry').length;
+                
+                if (participants < 2) {
+                    alert('Please add at least 2 participants to start the session.');
+                    return;
+                }
+                
+                // Calculate times and validate end time
+                if (!calculateTimes()) {
+                    return; // Stop if time calculation fails
+                }
+                
+                totalParticipantsEl.textContent = participants;
+                
+                // Collect participant names
+                participantNames = [];
+                document.querySelectorAll('.participant-entry input').forEach(input => {
+                    const name = input.value.trim() || input.placeholder;
+                    participantNames.push(name);
+                });
+                
+                // Hide setup, show timer
+                setupCard.classList.add('hidden');
+                timerCard.classList.remove('hidden');
+                
+                // Reset state
+                currentParticipant = 1;
+                currentPhase = 1;
+                feedbackParticipant = 1;
+                isPaused = false;
+                pauseResumeBtn.textContent = "Pause";
+                previousPhaseHistory = []; // Clear history when starting a new session
+                
+                updatePhaseUI();
+                startTimer();
+            }
+            
+            // Toggle pause/resume
+            function togglePauseResume() {
+                isPaused = !isPaused;
+                
+                if (isPaused) {
+                    pauseResumeBtn.textContent = "Resume";
+                    // When paused, we need to adjust the end time
+                    const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
+                    pauseTime = currentTimeInSeconds;
+                } else {
+                    pauseResumeBtn.textContent = "Pause";
+                    // Calculate how long we were paused and adjust the phase end time
+                    const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
+                    const pauseDuration = currentTimeInSeconds - (pauseTime || currentTimeInSeconds);
+                    currentPhaseEndTime += pauseDuration;
+                }
+            }
+            
+            // Skip current phase
+            function skipCurrentPhase() {
+                moveToNextPhase();
+                // Force an update of the timer display if not already in interval
+                if (isPaused) {
+                    const now = new Date();
+                    currentTime = now;
+                    const currentTimeInSeconds = Math.floor(now.getTime() / 1000);
+                    const phaseRemainingSeconds = Math.max(0, Math.floor(currentPhaseEndTime - currentTimeInSeconds));
+                    timerDisplay.textContent = formatTime(phaseRemainingSeconds);
+                    updateProgressBar(phaseRemainingSeconds);
+                }
+            }
+            
+            // Reset timer (go back to setup)
+            function resetTimer() {
+                clearInterval(timerInterval);
+                timerCard.classList.add('hidden');
+                setupCard.classList.remove('hidden');
+                phaseIndicatorEl.classList.remove("completed");
+                progressBar.style.width = "0%";
+                pauseResumeBtn.disabled = false;
+                prevPhaseBtn.disabled = false;
+                skipBtn.disabled = false;
+                previousPhaseHistory = []; // Clear history when resetting
+                
+                // Keep the participant list as is
+                validateForm();
+            }
+            
+            // Event listeners
+            addParticipantBtn.addEventListener('click', addParticipant);
+            defaultTimeBtn.addEventListener('click', setDefaultEndTime);
+            startSessionBtn.addEventListener('click', startSession);
+            pauseResumeBtn.addEventListener('click', togglePauseResume);
+            prevPhaseBtn.addEventListener('click', goToPreviousPhase);
+            skipBtn.addEventListener('click', skipCurrentPhase);
+            resetBtn.addEventListener('click', resetTimer);
+            
+            // Initialize
+            populateHours();
+            populateMinutes();
+            setDefaultEndTime();
+            
+            // Add default 4 participants to start
+            for (let i = 0; i < 4; i++) {
+                addParticipant();
+            }
+            
+            // Initial validation
+            validateForm();
+        });
+    </script>
+</body>
+</html>
