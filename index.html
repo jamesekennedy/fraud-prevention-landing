@@ -15,7 +15,10 @@
     '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PH2CJ79');</script>
     <!-- End Google Tag Manager -->
-    
+
+    <!-- HubSpot Form Embed Script -->
+    <script src="https://js.hsforms.net/forms/embed/599086.js" defer></script>
+
     <style>
         * {
             margin: 0;
@@ -1052,6 +1055,128 @@
             justify-content: center;
         }
 
+        /* HubSpot Form Modal */
+        .hubspot-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            backdrop-filter: blur(5px);
+        }
+
+        .hubspot-modal-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hubspot-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .hubspot-modal-header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-blue) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hubspot-modal-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hubspot-modal-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .hubspot-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .hubspot-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .hubspot-form-container {
+            padding: 30px;
+        }
+
+        .hubspot-form-container .hs-form {
+            max-width: 100%;
+        }
+
+        .hubspot-form-container .hs-form .hs-fieldtype-text input,
+        .hubspot-form-container .hs-form .hs-fieldtype-email input,
+        .hubspot-form-container .hs-form .hs-fieldtype-select select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .hubspot-form-container .hs-form .hs-fieldtype-text input:focus,
+        .hubspot-form-container .hs-form .hs-fieldtype-email input:focus,
+        .hubspot-form-container .hs-form .hs-fieldtype-select select:focus {
+            border-color: var(--primary-orange);
+            outline: none;
+        }
+
+        .hubspot-form-container .hs-form .hs-button {
+            background: var(--primary-orange) !important;
+            color: white !important;
+            border: none !important;
+            padding: 15px 30px !important;
+            border-radius: 6px !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            width: 100% !important;
+            margin-top: 20px !important;
+        }
+
+        .hubspot-form-container .hs-form .hs-button:hover {
+            background: #e6441f !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+        }
+
         .modal-content {
             position: relative;
             width: 90%;
@@ -1280,7 +1405,7 @@
             </div>
 
             <div class="cta-container">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="primary-cta">Stop Fraud Now</a>
+                <a href="#" class="primary-cta" id="main-cta-btn">Get FREE 2 CFR 200 Compliance Guide</a>
                 <a href="#" class="secondary-link" id="demo-video-link">Watch 2-min demo →</a>
             </div>
         </div>
@@ -1518,7 +1643,7 @@
             </div>
 
             <div class="cta-buttons">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="btn-primary">Start Free Trial - No Credit Card Required</a>
+                <a href="#" class="btn-primary hubspot-form-trigger">Get FREE 2 CFR 200 Compliance Guide</a>
                 <a href="https://www.procurementexpress.com/book-a-demo/" class="btn-secondary">Schedule 15-Minute Demo Today</a>
             </div>
 
@@ -1552,7 +1677,7 @@
             </div>
 
             <div style="margin-top: 40px;">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="primary-cta" style="background: white; color: var(--primary-orange);">Protect Your Books Now →</a>
+                <a href="#" class="primary-cta hubspot-form-trigger" style="background: white; color: var(--primary-orange);">Get FREE Compliance Guide →</a>
             </div>
         </div>
     </section>
@@ -1608,9 +1733,9 @@
     <section class="final-cta-section">
         <div class="container">
             <div class="cta-buttons">
-                <a href="https://www.procurementexpress.com/users/sign_up" class="btn-primary">Start Your Free Trial</a>
+                <a href="#" class="btn-primary hubspot-form-trigger">Get FREE 2 CFR 200 Compliance Guide</a>
                 <a href="https://www.procurementexpress.com/book-a-demo/" class="btn-secondary">Book a Demo</a>
-                <a href="https://www.procurementexpress.com/resources/" class="btn-tertiary">Download Fraud Prevention Guide</a>
+                <a href="https://www.procurementexpress.com/users/sign_up" class="btn-tertiary">Start Free Trial</a>
             </div>
 
             <div class="quick-contact-bar">
@@ -1678,7 +1803,7 @@
 
     <!-- Mobile Sticky CTA (appears on scroll) -->
     <div class="mobile-sticky-cta" id="mobileCTA">
-        <a href="https://www.procurementexpress.com/users/sign_up">Start Free Trial - Protect Your Books</a>
+        <a href="#" class="hubspot-form-trigger">Get FREE 2 CFR 200 Guide</a>
     </div>
 
     <script>
@@ -1723,6 +1848,77 @@
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && modal.classList.contains('show')) {
                     closeVideoModal();
+                }
+            });
+        });
+
+        // HubSpot Form Modal Functions
+        function openHubSpotModal() {
+            const modal = document.getElementById('hubspotModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            // Track form open event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_start', {
+                    'event_category': 'engagement',
+                    'event_label': '2CFR200_Form_Open'
+                });
+            }
+        }
+
+        function closeHubSpotModal() {
+            const modal = document.getElementById('hubspotModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Initialize HubSpot form modal events
+        document.addEventListener('DOMContentLoaded', function() {
+            const hubspotModal = document.getElementById('hubspotModal');
+            const hubspotCloseBtn = hubspotModal.querySelector('.hubspot-modal-close');
+
+            // Add event listeners for all CTA buttons
+            const ctaButtons = document.querySelectorAll('.hubspot-form-trigger, #main-cta-btn');
+            ctaButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openHubSpotModal();
+                });
+            });
+
+            // Close button event
+            hubspotCloseBtn.addEventListener('click', closeHubSpotModal);
+
+            // Close when clicking outside modal
+            hubspotModal.addEventListener('click', function(e) {
+                if (e.target === hubspotModal) {
+                    closeHubSpotModal();
+                }
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && hubspotModal.classList.contains('show')) {
+                    closeHubSpotModal();
+                }
+            });
+
+            // Listen for HubSpot form submissions
+            window.addEventListener('message', function(event) {
+                if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
+                    // Track form submission
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submit', {
+                            'event_category': 'engagement',
+                            'event_label': '2CFR200_Form_Submit'
+                        });
+                    }
+
+                    // Redirect to thank you page after a short delay
+                    setTimeout(function() {
+                        window.location.href = 'thanks.html';
+                    }, 1000);
                 }
             });
         });
@@ -1787,14 +1983,28 @@
         <div class="modal-content">
             <button class="modal-close">&times;</button>
             <div class="modal-video-container">
-                <iframe 
+                <iframe
                     id="modalVideoFrame"
-                    src="" 
+                    src=""
                     title="2-Minute Demo Video"
-                    frameborder="0" 
+                    frameborder="0"
                     allowfullscreen
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
                 </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- HubSpot Form Modal -->
+    <div id="hubspotModal" class="hubspot-modal-overlay">
+        <div class="hubspot-modal-content">
+            <div class="hubspot-modal-header">
+                <button class="hubspot-modal-close">&times;</button>
+                <h2>Get Your FREE 2 CFR 200 Compliance Guide</h2>
+                <p>Complete federal grant compliance checklist with actionable steps to protect your organization</p>
+            </div>
+            <div class="hubspot-form-container">
+                <div class="hs-form-frame" data-region="na1" data-form-id="e3672265-059e-4192-880c-9af45b9a8cc5" data-portal-id="599086"></div>
             </div>
         </div>
     </div>
