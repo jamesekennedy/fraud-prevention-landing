@@ -493,13 +493,13 @@
             <div class="thank-you-content">
                 <div class="success-icon">✓</div>
                 <h1>Thank You!</h1>
-                <p class="subheadline">Your 2 CFR 200 Compliance Checklist is ready for download. Use this comprehensive guide to ensure your organization meets all federal grant requirements.</p>
+                <p class="subheadline" id="subheadline">Your 2 CFR 200 Compliance Checklist is ready for download. Use this comprehensive guide to ensure your organization meets all federal grant requirements.</p>
 
                 <div class="download-section">
                     <a href="downloads/procurementexpress_2cfr_checklist.pdf" class="download-btn" download id="downloadBtn">
                         📄 Download Your Checklist
                     </a>
-                    <div class="file-info">PDF Format • 2.3MB • 24 Pages</div>
+                    <div class="file-info" id="fileInfo">PDF Format • 2.3MB • 24 Pages</div>
                 </div>
             </div>
         </div>
@@ -576,10 +576,50 @@
     </footer>
 
     <script>
+        // Get URL parameter for file download
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Configuration for different file types
+        const fileConfig = {
+            'internal_controls_checklist.pdf': {
+                filename: 'procurementexpress_internal_controls_checklist.pdf',
+                subheadline: 'Your Internal Controls Checklist is ready for download. Use this comprehensive guide to strengthen your financial controls and ensure audit readiness.',
+                fileInfo: 'PDF Format • 2.3MB • 24 Pages',
+                eventLabel: 'Internal_Controls_Checklist'
+            },
+            'procurementexpress_2cfr_checklist.pdf': {
+                filename: 'procurementexpress_2cfr_checklist.pdf',
+                subheadline: 'Your 2 CFR 200 Compliance Checklist is ready for download. Use this comprehensive guide to ensure your organization meets all federal grant requirements.',
+                fileInfo: 'PDF Format • 2.3MB • 24 Pages',
+                eventLabel: '2CFR200_Checklist'
+            }
+        };
+
         // Auto-trigger download on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Add pulse animation to download button
             const downloadBtn = document.getElementById('downloadBtn');
+            const subheadline = document.getElementById('subheadline');
+            const fileInfo = document.getElementById('fileInfo');
+
+            // Get file parameter from URL or use default
+            const fileParam = getUrlParameter('file') || 'procurementexpress_2cfr_checklist.pdf';
+            const config = fileConfig[fileParam] || fileConfig['procurementexpress_2cfr_checklist.pdf'];
+
+            // Update page content based on file
+            downloadBtn.href = 'downloads/' + config.filename;
+            downloadBtn.download = config.filename;
+            subheadline.textContent = config.subheadline;
+            fileInfo.textContent = config.fileInfo;
+
+            // Store event label for tracking
+            downloadBtn.dataset.eventLabel = config.eventLabel;
+
+            // Add pulse animation to download button
             downloadBtn.classList.add('pulse');
 
             // Auto-download after 2 seconds
@@ -591,12 +631,14 @@
 
         // Track download events
         document.getElementById('downloadBtn').addEventListener('click', function() {
-            console.log('2 CFR 200 Checklist downloaded');
-            // Here you would send to Google Analytics
+            const eventLabel = this.dataset.eventLabel || 'Generic_Checklist';
+            console.log(eventLabel + ' downloaded');
+
+            // Send to Google Analytics
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'download', {
                     'event_category': 'engagement',
-                    'event_label': '2CFR200_Checklist'
+                    'event_label': eventLabel
                 });
             }
         });
